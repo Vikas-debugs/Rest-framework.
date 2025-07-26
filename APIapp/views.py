@@ -143,3 +143,43 @@ class todoviewset(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
     serializer_class =TodoSerializer
 
+
+# def count(request):
+#     if "count" in request.COOKIES:
+#         newc =int(request.COOKIES['count'])+1
+#     else:
+#         newc= 1;
+#     response =render(request,'count.html',{'count':newc})
+#     response.set_cookie('count',newc)
+#     return response
+
+# **************************session management using SESSION API ******************************
+def count(request):
+        count = request.session.get('count',0)
+        nc =count+1
+        request.session['count'] = nc
+        print(request.session.get_expiry_age())
+        print(request.session.get_expiry_date())
+        return render(request,'count.html',{'count':nc})
+# *********session management by using Cookies************************************
+
+def  name(request):
+    return render(request,'name.html')
+def age(request):
+    name= request.GET['name']
+    response = render(request,'age.html',{'name':name})
+    response.set_cookie('name',name)
+    return response
+def gf(request):
+    age = request.GET['age']
+    name = request.COOKIES['name']
+    response = render(request, 'gf.html', {'name': name})
+    response.set_cookie('age', age)
+    return response
+def result (request):
+    name = request.COOKIES['name']
+    age =request.COOKIES['age']
+    gfname= request.GET['gfname']
+    response = render(request, 'gf.html', {'name': name, 'age': age, 'gfname':gfname})
+    response.set_cookie('gfname', gfname)
+    return response

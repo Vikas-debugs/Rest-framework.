@@ -8,7 +8,12 @@ router  = DefaultRouter()
 router.register(r'todoviewset', todoviewset, basename ='todoviewset')
 urlpatterns = [
     #**********FBViews******************
-    path('', home,name ="home"),
+
+    path('', home, name="home"),
+    path('result', result,name ="result"),
+    path('gfname', gf, name="gfname"),
+    path('age', age, name="age"),
+    path('count/', count,name= 'count'),
     path('get_todo',get_todo,name='get_todo'),
     # **********CBViews******************
     path('todoView/',todoView.as_view(),name='todoView')
