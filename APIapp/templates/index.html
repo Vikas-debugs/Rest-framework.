@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{%block body_block% }
+<h1> info of emp</h1>
+<table border='2'>
+    <thead>
+    <th>
+        emp number
+    </th>
+    <th>
+        emp name
+    </th>
+    <th>
+        emp sal
+    </th>
+    <th>
+        emp address
+    </th>
+    </thead>
+    {% for em in emp%}
+    <tr>
+        <td>
+            {{em.eno}}
+        </td>
+        <td>
+            {{em.ename}}
+        </td>
+        <td>
+            {{em.esal}}
+        </td>
+        <td>
+            {{em.eaddr}}
+        </td>
+    </tr>
+    {%endfor%}
+</table> <br> <br>
+{%endblock%}

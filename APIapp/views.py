@@ -1,17 +1,20 @@
-from django.shortcuts import render
-from .serializer import TodoSerializer
-from  rest_framework.decorators import api_view
-from  rest_framework import  viewsets
-from  rest_framework.decorators import APIView
+from django.shortcuts import render, HttpResponse
+from rest_framework import viewsets
+from rest_framework.decorators import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 from .models import Todo
-@api_view(['GET', 'POST','PATCH'])
+from .serializer import TodoSerializer
+
+
+@api_view(['GET', 'POST', 'PATCH'])
 def home(request):
     if request.method == 'GET':
         return Response(
             {
                 "status": 200,
-                "msg" :"welcome"
+                "msg": "welcome"
             }
         )
     elif request.method == "PATCH":
@@ -33,20 +36,20 @@ def home(request):
 @api_view(['GET'])
 def get_todo(request):
     todo_objs = Todo.objects.all()
-    serializer = TodoSerializer(todo_objs , many =True)
+    serializer = TodoSerializer(todo_objs, many=True)
     return Response({
-        "status":True,
+        "status": True,
         'msg': 'todo',
         'data': serializer.data
 
-
     })
+
 
 @api_view(['POST'])
 def post_todo(request):
-    try :
-        data =  request.data
-        serializer = TodoSerializer (data = data)
+    try:
+        data = request.data
+        serializer = TodoSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -70,6 +73,7 @@ def post_todo(request):
             "msg": "post-todo"
         }
     )
+
 
 # @api_view(['PATCH'])
 # def patch_todo(request):
@@ -111,11 +115,11 @@ def post_todo(request):
 #     )
 # # Create your views here.
 
-#********* CBV************************
+# ********* CBV************************
 class todoView(APIView):
-    def get(self,request):
-        todo_objs =Todo.objects.all()
-        serializer = TodoSerializer(todo_objs, many =True)
+    def get(self, request):
+        todo_objs = Todo.objects.all()
+        serializer = TodoSerializer(todo_objs, many=True)
         return Response({
             'status': 200,
             'msg': 'yes get is working',
@@ -123,10 +127,11 @@ class todoView(APIView):
             'data': serializer.data
 
         })
+
     def post(self, request):
         try:
             data = request.data
-            serializer = TodoSerializer(data = data)
+            serializer = TodoSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({
@@ -137,11 +142,12 @@ class todoView(APIView):
         except Exception as a:
             print(a)
 
+
 # *********ViewSets*******************************
 
 class todoviewset(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
-    serializer_class =TodoSerializer
+    serializer_class = TodoSerializer
 
 
 # def count(request):
@@ -155,31 +161,100 @@ class todoviewset(viewsets.ModelViewSet):
 
 # **************************session management using SESSION API ******************************
 def count(request):
-        count = request.session.get('count',0)
-        nc =count+1
-        request.session['count'] = nc
-        print(request.session.get_expiry_age())
-        print(request.session.get_expiry_date())
-        return render(request,'count.html',{'count':nc})
+    count = request.session.get('count', 0)
+    nc = count + 1
+    request.session['count'] = nc
+    print(request.session.get_expiry_age())
+    print(request.session.get_expiry_date())
+    return render(request, 'count.html', {'count': nc})
+
+
 # *********session management by using Cookies************************************
 
-def  name(request):
-    return render(request,'name.html')
+def name(request):
+    return render(request, 'name.html')
+
+
 def age(request):
-    name= request.GET['name']
-    response = render(request,'age.html',{'name':name})
-    response.set_cookie('name',name)
+    name = request.GET['name']
+    response = render(request, 'age.html', {'name': name})
+    response.set_cookie('name', name)
     return response
+
+
 def gf(request):
     age = request.GET['age']
     name = request.COOKIES['name']
     response = render(request, 'gf.html', {'name': name})
     response.set_cookie('age', age)
     return response
-def result (request):
+
+
+def result(request):
     name = request.COOKIES['name']
-    age =request.COOKIES['age']
-    gfname= request.GET['gfname']
-    response = render(request, 'gf.html', {'name': name, 'age': age, 'gfname':gfname})
+    age = request.COOKIES['age']
+    gfname = request.GET['gfname']
+    response = render(request, 'gf.html', {'name': name, 'age': age, 'gfname': gfname})
     response.set_cookie('gfname', gfname)
     return response
+
+
+# *************************cookies*****************************
+def set_cookie(request):
+    return render(request, 'set_cookie.html')
+    response.set_cookie('set_cookie_token', '12345')
+    return response
+
+
+def del_cookie(request):
+    return render(request, '/del_cookie.html')
+
+
+def get_cookie(request):
+    return render(request, '/get_cookie.html')
+
+
+# ***************************sessions*************************
+def set_session(request):
+    request.session[name] = 'vikas'
+    return render(request, ' set_session.html')
+
+
+def get_session(request):
+    first_name = request.session.get(name)
+    return render(request, 'get_session.html', {'first_name': first_name})
+
+
+def del_session(request):
+    return render(request, 'del_session.html')
+
+
+def flush_session(request):
+    return render(request, 'flush_session.html')
+
+
+# **************************************************middleware view 8***************
+def middleware(request):
+    print('printed by functions')
+    return HttpResponse("<h1> hello this is home page </h2>")
+
+
+def app(request):
+    return HttpResponse("<h1> hello this is home page </h2>")
+
+
+def error(request):
+    print(10 / 0)
+    return HttpResponse("<h1> hello this is home page </h2>")
+
+
+# **********************************ProxyViews***************************************************
+from .models import proxy2
+
+
+def pviews(request):
+    emp = proxy2.objects.all()
+    dict = {
+        "emp": emp
+    }
+    return render(request, 'index.html', dict)

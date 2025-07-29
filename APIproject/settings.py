@@ -43,6 +43,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # 'APIapp.middleware.error',
+    #  'APIapp.middleware.AppMaintenance',
+    # 'APIapp.middleware.SecondMiddelware',
+    # 'APIapp.middleware.FirstMiddelware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
