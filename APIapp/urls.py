@@ -12,6 +12,7 @@ urlpatterns = [
     path('', home, name="home"),
     path('result/', result, name="result"),
     path('pviews/', pviews, name="pviews"),
+    path('filter/', filter, name="filter"),
     path('gfname/', gf, name="gfname"),
     path('age/', age, name="age"),
     path('count/', count, name='count'),

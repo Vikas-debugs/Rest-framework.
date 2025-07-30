@@ -258,3 +258,8 @@ def pviews(request):
         "emp": emp
     }
     return render(request, 'index.html', dict)
+
+
+def filter(request):
+    context = {'data': 'Hello welcome user'}
+    return render(request, 'filter.html', context)
