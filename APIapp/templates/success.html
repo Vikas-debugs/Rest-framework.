@@ -1,0 +1,17 @@
+<!-- your_app/templates/success.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+    </style>
+</head>
+<body>
+<h2>Thank You!</h2>
+<p>Your request has been submitted successfully.</p>
+<a href="{% url 'captcha_page' %}">Submit another form</a>
+</body>
+</html>

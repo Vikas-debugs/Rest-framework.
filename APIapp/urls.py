@@ -1,5 +1,7 @@
 from django.urls import path
-# ********for viewset urls**********
+from django.views.generic.base import TemplateView
+from . import views
+# ** ************************************************  ******for viewset urls**********
 from rest_framework.routers import DefaultRouter
 
 from .views import *
@@ -7,9 +9,12 @@ from .views import *
 router = DefaultRouter()
 router.register(r'todoviewset', todoviewset, basename='todoviewset')
 urlpatterns = [
-    # **********FBViews******************
 
+    # *****************TemplateView****************
+    path('template/', TemplateView.as_view(template_name="template.html"), name='template'),
+    # **********FBViews******************
     path('', home, name="home"),
+
     path('result/', result, name="result"),
     path('pviews/', pviews, name="pviews"),
     path('filter/', filter, name="filter"),
@@ -26,7 +31,11 @@ urlpatterns = [
     path('flush_session/', flush_session, name='flush_session'),
     path('error/', error, name='error'),
     path('get_todo/', get_todo, name='get_todo'),
-    # **********CBViews******************
-    path('todoView/', todoView.as_view(), name='todoView')
+                                                       # **********CBViews******************
+    path('todoView/', todoView.as_view(), name='todoView'),
+# *****************************************************************************Captcha*********************************
+    path('captcha/', views.captcha_page, name='captcha_page'),
+    # URL for the success page
+    path('success/', views.success_page, name='success_page'),
 ]
 urlpatterns += router.urls

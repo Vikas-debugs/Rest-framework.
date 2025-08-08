@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import APIView
 from rest_framework.decorators import api_view
@@ -128,20 +128,54 @@ class todoView(APIView):
 
         })
 
-    def post(self, request):
-        try:
-            data = request.data
-            serializer = TodoSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({
-                    'status': 200,
-                    'msg': 'yes post is working',
-                    'method': 'POST method'
-                })
-        except Exception as a:
-            print(a)
 
+# your_app/views.py
+
+from django.shortcuts import render, redirect
+from .forms import ContactForm
+
+
+def captcha_page(request):
+    if request.method == 'POST':
+        # Create a form instance and populate it with data from the request
+        form = ContactForm(request.POST)
+
+        # The form is valid if all fields (including the captcha) are correct
+        if form.is_valid():
+            # You can now access the cleaned data
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            # Process the data (e.g., send an email, save to database)
+            print(f"Received form submission from {name} ({email}): {message}")
+
+            # Redirect to a new URL to prevent form resubmission
+            return redirect('success_page')
+
+    else:
+        # If a GET request, we'll create a blank form
+        form = ContactForm()
+
+    return render(request, 'captcha.html', {'form': form})
+
+
+def success_page(request):
+    # This is the page users will see after a successful submission
+    return render(request, 'success.html')
+
+
+#  def post(self, request):
+#      try:
+#          data = request.data
+#          serializer = TodoSerializer(data=data)
+#          if serializer.is_valid():
+#              serializer.save()
+#              return Response({
+#                  'status': 200,
+#                  'msg': serializer.data,
+#                  'method': 'POST method',          })
+# # return Response(serializer.errors)
 
 # *********ViewSets*******************************
 

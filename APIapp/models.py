@@ -1,6 +1,21 @@
 import uuid
 
+# *********************************CustomManager****************************
 from django.db import models
+
+from .managers import customManager
+
+
+class students(models.Model):
+    name = models.CharField(max_length=70)
+    city = models.CharField()
+    objects = customManager()
+
+
+def home(request):
+    st_data = student.objects.all()
+    context = {'stu': st_data}
+    return render(request, 'students.html', context)
 
 
 class Basemodel(models.Model):
