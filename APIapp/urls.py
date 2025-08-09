@@ -31,9 +31,9 @@ urlpatterns = [
     path('flush_session/', flush_session, name='flush_session'),
     path('error/', error, name='error'),
     path('get_todo/', get_todo, name='get_todo'),
-                                                       # **********CBViews******************
+    # **********CBViews******************
     path('todoView/', todoView.as_view(), name='todoView'),
-# *****************************************************************************Captcha*********************************
+    # *****************************************************************************Captcha*********************************
     path('captcha/', views.captcha_page, name='captcha_page'),
     # URL for the success page
     path('success/', views.success_page, name='success_page'),
